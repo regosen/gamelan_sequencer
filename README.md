@@ -1,6 +1,6 @@
 # gamelan_sequencer
 
-**Python sequencer for Gamelan instruments and compositions.**
+**Python sequencer for Gamelan music.**
 
 ## Introduction
 
@@ -34,6 +34,7 @@ You must provide either a MIXDOWN_FILE or SEPARATES_FOLDER (or both)
 ## Example
 
 Using the provided JSON files in this repository:
+
 `python gamelan.py javanese_gamelan.json kotekan_sonatina.json --mixdown=mixdown.wav`
 
 Output should sound something like this: https://youtu.be/6_ZQaYkq0q0

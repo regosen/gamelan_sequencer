@@ -1,0 +1,190 @@
+{ 
+  "COMMENTS": [
+    "This is a JSON file representing a score for 'Kotekan Sonatina' by Rego Sen.",
+    "First written in 2002, transcribed into this format in 2019.",
+    "'sequences' is a reusable set of musical tracks.",
+    "'sections' is the score of the composition.  It is a list made up of sequences."
+  ],
+
+  "sequences": {
+    "intro": {
+      "tempo": "320",
+      "tracks": [ 
+        { "instrument": "kecrek",                     "notes": "1..." },
+        { "instrument": "gong",                       "notes": "2..." },
+        { "instrument": "bonang", "name": "polos1",   "notes": "A5.A" },
+        { "instrument": "bonang", "name": "sangsih2", "notes": "32.3" }
+      ]
+    },
+    "theme1a": {
+      "tempo": "400",
+      "tracks": [
+        { "instrument": "bonang", "name": "polos1",   "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
+        { "instrument": "bonang", "name": "sangsih1", "notes": "3.434.343.43.34.343.434.34.4" },
+        { "instrument": "saron",  "name": "pokok",    "notes": "3...4..5A.5.4...3...4.3.2..." }
+      ]
+    },
+    "theme1b": {
+      "tempo": "400",
+      "tracks": [
+        { "instrument": "bonang", "name": "polos1",   "notes": "A5.A.5A.A5.A5A.5A.A5.A.5" },
+        { "instrument": "bonang", "name": "sangsih1", "notes": "3.434.343.43.34.343.434." },
+        { "instrument": "saron",  "name": "pokok",    "notes": "3...4..5A.5.4...3...4.3." }
+      ]
+    },
+    "theme1c": {
+      "tempo": "400",
+      "tempo_end": "320",
+      "tracks": [
+        { "instrument": "kecrek",                     "notes": "1..." },
+        { "instrument": "gong",                       "notes": "1..." },
+        { "instrument": "bonang", "name": "polos1",   "notes": "A5.A" },
+        { "instrument": "bonang", "name": "sangsih1", "notes": "43.4" },
+        { "instrument": "saron",  "name": "pokok",    "notes": "2..." }
+      ]
+    },
+    "theme2a": {
+      "tempo": "320",
+      "tracks": [
+        { "instrument": "bonang", "name": "polos2",   "notes": "45.4.54.5.45.4.5" },
+        { "instrument": "bonang", "name": "sangsih2", "notes": ".23.32.323.23.32" },
+        { "instrument": "saron",  "name": "pokok",    "notes": "4...5...A.5.4..." }
+      ]
+    },
+    "theme2b": {
+      "tempo": "320",
+      "tracks": [
+        { "instrument": "bonang", "name": "polos2",   "notes": "45.4.54.5.45" },
+        { "instrument": "bonang", "name": "sangsih2", "notes": ".23.32.323.2" },
+        { "instrument": "saron",  "name": "pokok",    "notes": "4...5...A.5." }
+      ]
+    },
+    "theme2c": {
+      "tempo": "320",
+      "tempo_end": "400",
+      "tracks": [
+        { "instrument": "kecrek",                     "notes": "1..." },
+        { "instrument": "gong",                       "notes": "3..." },
+        { "instrument": "bonang", "name": "polos2",   "notes": "45.4" },
+        { "instrument": "bonang", "name": "sangsih2", "notes": "32.3" },
+        { "instrument": "saron",  "name": "pokok",    "notes": "4..." }
+      ]
+    },
+    "developmentA": {
+      "tempo": "400",
+      "tracks": [
+        { "instrument": "bonang", "name": "polos1",  "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
+        { "instrument": "bonang", "name": "polos2",  "notes": "....45.4.54.5.45.4.5........" }
+      ]
+    },
+    "developmentB": {
+      "tempo": "400",
+      "tracks": [
+        { "instrument": "bonang", "name": "polos1",  "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
+        { "instrument": "bonang", "name": "polos2",  "notes": "....45.4.54.5.45.4.54.45.454" }
+      ]
+    },
+    "developmentC": {
+      "tempo": "400",
+      "tracks": [
+        { "instrument": "bonang", "name": "polos1",   "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
+        { "instrument": "bonang", "name": "polos2",   "notes": ".54.45.4.54.5.45.4.54.45.454" },
+        { "instrument": "bonang", "name": "sangsih1", "notes": "3.434.343.43.34.343.434.34.4" },
+        { "instrument": "bonang", "name": "sangsih2", "notes": "32.3.23.32.323.23.32.3.23.2." }
+      ]
+    },
+    "developmentE": {
+      "tempo": "400",
+      "tracks": [
+        { "instrument": "bonang", "name": "polos1",   "notes": "FE.F.EF.FE.FEF.EF.FE.F.EF.E." },
+        { "instrument": "bonang", "name": "polos2",   "notes": ".CB.BC.B.CB.C.BC.B.CB.BC.BCB" },
+        { "instrument": "bonang", "name": "sangsih1", "notes": "DC.D.CD.DC.DCD.CD.DC.D.CD.C." },
+        { "instrument": "saron",  "name": "sangsih2", "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." }
+      ]
+    },
+    "development3a": {
+      "tempo": "400",
+      "tracks": [
+        { "instrument": "bonang",  "name": "sangsih1", "notes": "3.434.343.43.34.343.434.34.4" },
+        { "instrument": "bonang",  "name": "polos2",   "notes": ".54.45.4.54.5.45.4.54.45.454" }
+      ]
+    },
+    "development3b": {
+      "tempo": "400",
+      "tracks": [
+        { "instrument": "bonang",  "name": "sangsih1", "notes": "3.434.343.43.34." },
+        { "instrument": "bonang",  "name": "polos2",   "notes": ".54.45.4.54.5.45" }
+      ]
+    },
+    "development3c": {
+      "tempo": "400",
+      "tracks": [
+        { "instrument": "bonang",  "name": "sangsih1", "notes": "343.434.34.4" },
+        { "instrument": "bonang",  "name": "polos2",   "notes": ".4.54.45.454" }
+      ]
+    },
+    "developmentEx": {
+      "tempo": "320",
+      "tracks": [
+        { "instrument": "kecrek", "name": "kecrek",   "notes": "1.......1.......1.......1..." },
+        { "instrument": "gong",   "name": "gong",     "notes": "1.......1.......1.......1..." },
+        { "instrument": "bonang", "name": "polos1",   "notes": "FE.F.EF.FE.FEF.EF.FE.F.EF.E." },
+        { "instrument": "bonang", "name": "sangsih1", "notes": "DC.D.CD.DC.DCD.CD.DC.D.CD.C." },
+        { "instrument": "bonang", "name": "polos2",   "notes": ".CB.BC.B.CB.C.BC.B.CB.BC.BCB" },
+        { "instrument": "bonang", "name": "sangsih2", "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
+        { "instrument": "saron",  "name": "pokok",    "notes": "3...4..5A.5.4...3...4.3.2..." },
+        { "instrument": "jenglong","name": "pokok",   "notes": "3...4..5A.5.4...3...4.3.2..." }
+      ]
+    },
+    "developmentDx": {
+      "tempo": "320",
+      "tracks": [
+        { "instrument": "kecrek", "name": "kecrek",  "notes": "1.......1.......1.......1..." },
+        { "instrument": "gong",   "name": "gong",    "notes": "3.......3.......3.......3..." },
+        { "instrument": "bonang", "name": "polos1",  "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
+        { "instrument": "bonang", "name": "polos2",  "notes": ".54.45.4.54.5.45.4.54.45.454" },
+        { "instrument": "bonang", "name": "sangsih1","notes": "3.434.343.43.34.343.434.34.4" },
+        { "instrument": "bonang", "name": "sangsih2","notes": "32.3.23.32.323.23.32.3.23.2." },
+        { "instrument": "saron",  "name": "pokok",   "notes": "4...5...A.5.4...5...A.5.4..." },
+        { "instrument": "jenglong", "name": "pokok", "notes": "4...5...A.5.4...5...A.5.4..." }
+      ]
+    }
+  },
+
+  "sections": [
+    { "sequence": "theme1a", "tracks": ["polos1", "sangsih1"] },
+    { "sequence": "theme1a" },
+    { "sequence": "theme1b" },
+    { "sequence": "theme1c" },
+    { "sequence": "theme2a", "count": "1" },
+    { "sequence": "theme2b" },
+    { "sequence": "theme2c" },
+    { "sequence": "theme1a" },
+    { "sequence": "theme1b" },
+    { "sequence": "theme1c" },
+    { "sequence": "theme2a", "count": "1" },
+    { "sequence": "theme2b" },
+    { "sequence": "theme2c" },
+    { "sequence": "developmentA", "count": "1", "tracks": ["polos1"] },
+    { "sequence": "developmentA", "count": "2" },
+    { "sequence": "developmentB", "count": "1" },
+    { "sequence": "developmentC", "count": "1", "tracks": ["polos1", "polos2"] },
+    { "sequence": "developmentC", "count": "1", "tracks": ["polos1", "polos2", "sangsih1", "sangsih2"] },
+    { "sequence": "developmentC", "count": "1", "tracks": ["polos1", "polos2"] },
+    { "sequence": "developmentC", "count": "2", "tracks": ["polos1", "polos2", "sangsih1", "sangsih2"] },
+    { "sequence": "developmentC", "count": "1", "tracks": ["polos1", "sangsih2"] },
+    { "sequence": "developmentE", "count": "1", "tracks": ["polos1", "sangsih2"]},
+    { "sequence": "developmentE", "count": "2" },
+    { "sequence": "developmentC", "count": "2", "tracks": ["polos1", "polos2c", "sangsih1", "sangsih2"] },
+    { "sequence": "developmentE", "count": "2" },
+    { "sequence": "developmentC", "count": "2", "tracks": ["polos1", "polos2c", "sangsih1", "sangsih2"] },
+    { "sequence": "development3a" },
+    { "sequence": "development3b" },
+    { "sequence": "development3c", "tempo": "400", "tempo_end": "320" },
+    { "sequence": "developmentEx","count": "2" },
+    { "sequence": "developmentDx","count": "2" },
+    { "sequence": "developmentEx","count": "2" },
+    { "sequence": "developmentDx","count": "2" },
+    { "sequence": "intro","count": "7" }
+  ]
+}

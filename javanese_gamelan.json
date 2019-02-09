@@ -6,7 +6,12 @@
     "'detune_rate_between_pairs' is 0 by default, applies to Balinese Gamelan (beats per second).",
     "'continuation_note' in the score means the previous note will continue playing.",
     "'samples_host' is a URL to where the samples can be downloaded from (if they're not local).",
-    "'samples_cache' is a relative path to the samples on disk.  If a sample file doesn't exist here, it will be copied from samples_host."
+    "'samples_cache' is a relative path to the samples on disk.",
+    "    If a sample file doesn't exist under samples_cache, it will be copied from samples_host.",
+
+    "'instruments' is a named set of intruments.  Parameters:",
+    "  'unpaired': (if you use detune_rate_between_pairs) this will opt out of detuning",
+    "  'samples': mapping of note symbols to the WAV file to play"
   ],
 
   "detune_rate_between_pairs": "0",
@@ -25,9 +30,7 @@
     "gong": { 
       "unpaired": "true",
       "samples": {
-        "1": "gong.wav",
-        "2": "gong.wav",
-        "3": "gong.wav"
+        "1": "gong.wav"
       }
     },
     "bonang": { 

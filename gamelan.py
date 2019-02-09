@@ -150,7 +150,7 @@ def parse_tempo_json(data):
 class Track(object):
     def __init__(self, data, continuation_note):
       self.instrument = data["instrument"]
-      self.name = data["name"] if "name" in data else ""
+      self.name = data["track_name"] if "track_name" in data else ""
       self.notes = data["notes"]
       # ignore spaces unless user specified them as continuation notes
       if continuation_note != " ":
@@ -279,7 +279,7 @@ class Composition(object):
       if num_errors:
         return num_errors
 
-      for idx, section_json in enumerate(data["sections"]):
+      for idx, section_json in enumerate(data["structure"]):
         section = Section(section_json, sequences)
         sequence = section.sequence
         print("Playing section %d: %s" % (idx + 1, section_json["sequence"]))

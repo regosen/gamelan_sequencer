@@ -15,8 +15,10 @@ I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorde
 
 1. Python 2.6 or greater
 2. scipy library (only if you use a gamelan with detuning): `pip install scipy`
-3. a Gamelan JSON file: a listing of gamelan samples in JSON format (example provided)
-4. a Score JSON file: a score that utilizes said instruments, also in JSON format (example provided)
+3. a Gamelan JSON file: a listing of gamelan samples in JSON format
+   - see javanese_gamelan.json for example
+4. a Score JSON file: a score that utilizes said instruments, also in JSON format
+   - see kotekan_sonatina.json for example
 
 ## Usage
 

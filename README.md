@@ -62,7 +62,7 @@ Then the notes will be recorded into the following files, respectively:
 - bonang_polos.wav
 - bonang_sangsih.wav
 
-They will all be in sync, so you can drag them into the audio application of your choice for mixing.
+They will all be in sync, so you can drag them into an audio application of your choice for mixing.
 
 
 ## Score Format

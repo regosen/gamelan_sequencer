@@ -1,6 +1,6 @@
 # gamelan_sequencer
 
-**Python sequencer for Gamelan music.**
+**Python sequencer for Gamelan music**
 
 ## Introduction
 

@@ -71,7 +71,8 @@ Gamelan music has different variations of scale notations, but typically they're
 
 For convenience I used alphanumberic values in the provided example:
 
-```                       .....
+```
+                       .....
 Kepatihan: 12345 12345 12345
            ^^^^^
 

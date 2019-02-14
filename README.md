@@ -27,9 +27,9 @@ I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorde
 - GAMELAN_FILE (required): path to Gamelan JSON file (described above)
 - SCORE_FILE (required): path to Score JSON file (described above)
 - MIXDOWN_FILE: if provided, the recording will be mixed down to a mono WAV file at this path
-- SEPARATES_FOLDER: if provided, for each unique instrument/track name combination, you will get a WAV file in this directory
-  - Example: if a sequence track has "instrument": "bonang", "name": "polos1", the track will be recorded onto a file called "bonang_polos1.wav"
-  - Example: if a sequence track has "instrument": "bonang" but no "name" provided, the track will be recorded onto a file called "bonang.wav"
+- SEPARATES_FOLDER: if provided, for each unique instrument/track name combination, you will get a WAV file in this directory.  For example:
+  - if a sequence track has "instrument": "bonang", "name": "polos1", the track will be recorded onto a file called "bonang_polos1.wav"
+  - if a sequence track has "instrument": "bonang" but no "name" provided, the track will be recorded onto a file called "bonang.wav"
 
 You must provide either a MIXDOWN_FILE or SEPARATES_FOLDER (or both)
 

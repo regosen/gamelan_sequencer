@@ -34,7 +34,7 @@
     
     "Note: tempos override in the following order: structure > sequence > score",
     "  In other words: if a structure entry has no tempos, it falls back on the sequence's tempos.",
-    "  And a sequence has no tempos, it falls back on the score's tempos."
+    "  And if a sequence has no tempos, it falls back on the score's tempos."
 
   ],
 

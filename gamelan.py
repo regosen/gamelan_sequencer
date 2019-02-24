@@ -7,11 +7,13 @@ except ImportError:
   from itertools import izip_longest as zip_longest
   from urllib2 import Request, urlopen, HTTPError
 
+
 ##### AMPLITUDE AND TIMING IS SLIGHTLY VARIED FOR MORE NATURAL-SOUNDING OUTPUT
 
 MAX_RANDOM_GAIN_RANGE_DB = 0.3
 MAX_RANDOM_TIME_OFFSET_MS_BY_TEMPO = 2.0 * 120 # max 2ms for 120 tempo
 START_SILENCE_MS = 100
+
 
 ##### UTILITIES
 
@@ -19,23 +21,25 @@ FLOAT_TO_16BIT = pow(2, 15)
 
 class WaveManager(object):
   def __init__(self):
-    self.initialized = False
+    self.seeded = False
 
   # seed wave constants with a wave file
   # we use this data for calculating fade lengths, etc.
-  def setup(self, input_file):
+  def seed(self, input_file):
+    if self.seeded:
+      raise RuntimeError("seed previously called on wave manager")
     wav = wave.open(input_file)
     self.framerate = wav.getframerate()
     self.nchannels = wav.getnchannels()
     self.sampwidth = wav.getsampwidth()
     self.reference_file = input_file
     self.frames_per_sec = self.framerate * self.nchannels
-    self.initialized = True
+    self.seeded = True
 
   # make sure all wave files have the same framerate/channels/bit depth
   def validate(self, wav, filename):
-    if not self.initialized:
-        raise RuntimeError("validate called before setup")
+    if not self.seeded:
+      raise RuntimeError("validate called before seeding wave manager")
     if self.framerate != wav.getframerate():
       raise RuntimeError("Wave files don't have the same frame rate (%s: %d, %s: %d)" % (self.reference_file, self.framerate, filename, wav.getframerate()))
     if self.nchannels != wav.getnchannels():
@@ -63,6 +67,7 @@ class WaveManager(object):
 
 wave_manager = WaveManager()
 
+
 ##### CLASSES FOR GAMELAN DATA (includes loading/detuning samples)
 
 class Sample(object):
@@ -71,8 +76,8 @@ class Sample(object):
       self.detune_scale_factor = 1.0 + (0.00154 * detune_rate)
       self.pitched_input_file = input_file.replace(".wav",".detuned.%g.wav" % detune_rate)
       self.data = []
-      if not wave_manager.initialized:
-        wave_manager.setup(input_file)
+      if not wave_manager.seeded:
+        wave_manager.seed(input_file)
 
     def detune_data(self, orig):
       print("Detuning " + self.input_file)
@@ -137,15 +142,72 @@ class Gamelan(object):
       for instrument_name, instrument_data in config["instruments"].items():
         self.instruments[instrument_name] = Instrument(instrument_data, self.paired_detune_rate, remote_folder, cache_folder)
 
+    # if sequence references any notes missing from the gamelan, returns list of notes per instrument
+    def find_missing_notes(self, tracks):
+      missing_notes_by_instrument = {}
+      for track in tracks:
+        instrument_name = track.instrument
+        if not instrument_name in missing_notes_by_instrument:
+          missing_notes_by_instrument[instrument_name] = []
+        instrument = self.instruments[instrument_name]
+        for note in set(track.notes):
+          if note == self.continuation_note:
+            continue
+          if note not in instrument.samples:
+            missing_notes_by_instrument[instrument_name].append(note)
+      return missing_notes_by_instrument
+
 
 ##### CLASSES FOR COMPOSITION DATA
 
-def parse_tempo_json(data):
-      tempo_start = float(data["tempo"]) if "tempo" in data else 0.0
-      tempo_end = float(data["tempo_end"]) if "tempo_end" in data else tempo_start
-      if tempo_end and not tempo_start:
-        raise ValueError("'tempo_end' (%d) must be accompanied with starting 'tempo'." % int(tempo_end))
-      return (tempo_start, tempo_end) if (tempo_start and tempo_end) else ()
+class Tempo(object):
+    def __init__(self, data):
+      self.timeline = {}
+      if "tempo" in data:
+        self.timeline[0.0] = int(data["tempo"])
+      elif "tempos" in data:
+        for offset, tempo in data["tempos"].items(): # this should already sort by key
+          self.timeline[float(offset)/100.0] = tempo
+
+    def get_override(self, root_tempo):
+      return self if self.timeline else root_tempo
+
+    def get_value(self, percent_offset):
+      first_point = self.timeline.items()[0]
+      if (len(self.timeline) == 1) or (percent_offset <= first_point[0]):
+        return first_point[1]
+
+      last_point = self.timeline.items()[-1]
+      if percent_offset >= last_point[0]:
+        return last_point[1]
+
+      start_offset, start_tempo = (-1.0, 0.0)
+      end_offset, end_tempo = (-1.0, 0.0)
+
+      # iterate through timeline to find the start/end segment that our offset is between
+      # TODO: this could be more efficient with binary search, but in practice there's few timeline points
+      for cur_offset, cur_tempo in self.timeline.items():
+        if cur_offset > percent_offset:
+          end_offset, end_tempo = (cur_offset, cur_tempo)
+          break
+        else:
+          start_offset, start_tempo = (cur_offset, cur_tempo)
+
+      offset_scale = (percent_offset - start_offset) / (end_offset - start_offset)
+      offset_tempo =  start_tempo + ((end_tempo - start_tempo) * offset_scale)
+      return offset_tempo
+
+# when a tempo's timeline applies across multiple sequences, then a given sequence's tempo 
+# should only come from a subset of the timeline
+class TempoSliced(Tempo):
+    def __init__(self, data):
+      Tempo.__init__(self, data)
+      self.offset = 0.0
+      self.span = 1.0
+
+    def get_value(self, percent_offset):
+      actual_offset = self.offset + (percent_offset * self.span)
+      return super(TempoSliced, self).get_value(actual_offset)
 
 class Track(object):
     def __init__(self, data, continuation_note):
@@ -158,16 +220,37 @@ class Track(object):
 
 class Sequence(object):
     def __init__(self, data, continuation_note):
-      self.tempos = parse_tempo_json(data)
+      self.tempo = TempoSliced(data)
       self.tracks = [Track(track_json, continuation_note) for track_json in data["tracks"]]
+
+class Filter(object):
+    def __init__(self, data):
+      self.instruments = data["instruments"] if "instruments" in data else []
+      self.tracks = data["tracks"] if "tracks" in data else []
+      self.start = int(data["start"]) if "start" in data else 0
+      self.end = int(data["end"]) if "end" in data else -1
+
+    def track_allowed(self, track):
+      if self.instruments and not track.instrument in self.instruments:
+        return False
+      if self.tracks and not track.name in self.tracks:
+        return False
+      return True
+
+    def get_notes(self, track):
+      if self.end == -1:
+        return track.notes
+      else:
+        return track.notes[self.start:self.end]
 
 class Section(object):
     def __init__(self, data, sequences):
       sequence_name = data["sequence"]
       self.sequence = sequences[sequence_name]
-      self.tracks = data["tracks"] if "tracks" in data else []
+      self.filter = Filter(data["filter"] if "filter" in data else {})
       self.count = int(data["count"]) if "count" in data else 1
-      self.tempos = parse_tempo_json(data)
+      self.tempo = TempoSliced(data)
+
 
 ##### COMPOSITION METHODS
 
@@ -210,93 +293,87 @@ class Composition(object):
         fade_gain = 1.0 - (float(fade_idx) / fade_length) 
         output[output_index] += input[idx] * gain * fade_gain
 
-    def play_notes(self, samples, output, notes, start_tempo, end_tempo):
+    def load_notes(self, samples, output, notes, tempo):
       cur_note = self.gamelan.continuation_note
       cur_length = 0
       cur_pos = self.offset
       fade_length = wave_manager.frames_per_sec // 100 # 10ms
       for idx, val in enumerate(notes):
-        tempo = int(((float(idx) / len(notes)) * (end_tempo - start_tempo)) + start_tempo)
-        beat_length = wave_manager.frames_per_sec * 60 // tempo 
+        cur_tempo = tempo.get_value(float(idx) / float(len(notes)))
+        beat_length = int(wave_manager.frames_per_sec * 60 / cur_tempo)
         if val == self.gamelan.continuation_note:
           cur_length += 1
         else:
           if cur_note in samples:
-            self.paste_mix(samples[cur_note].get_data(), output, cur_pos, beat_length * cur_length, fade_length, tempo)
+            self.paste_mix(samples[cur_note].get_data(), output, cur_pos, beat_length * cur_length, fade_length, cur_tempo)
           cur_pos += beat_length * cur_length
           cur_note = val
           cur_length = 1
       if cur_note in samples:
         # play what's left, extending a little further into the next sequence
-        self.paste_mix(samples[cur_note].get_data(), output, cur_pos, beat_length * cur_length, beat_length, tempo)
+        self.paste_mix(samples[cur_note].get_data(), output, cur_pos, beat_length * cur_length, beat_length, cur_tempo)
         cur_pos += beat_length * cur_length
       return cur_pos
 
-    def play_sequence(self, sequence, filtered_tracks, tempo_start, tempo_end):
+    def load_sequence(self, sequence, filter, tempo):
       cur_pos = 0
       for track in sequence.tracks:
-        if (len(filtered_tracks) == 0) or (track.name in filtered_tracks):
+        if filter.track_allowed(track):
           instrument = self.gamelan.instruments[track.instrument]
           channel_name = track.instrument
           if track.name:
             channel_name += "_" + track.name
           if not channel_name in self.outputs:
             self.outputs[channel_name] = []
-          cur_pos = self.play_notes(instrument.samples, self.outputs[channel_name], track.notes, tempo_start, tempo_end)
+          notes = filter.get_notes(track)
+          cur_pos = self.load_notes(instrument.samples, self.outputs[channel_name], notes, tempo)
           if instrument.detuned_samples:
-            self.play_notes(instrument.detuned_samples, self.outputs[channel_name], track.notes, tempo_start, tempo_end)
+            self.load_notes(instrument.detuned_samples, self.outputs[channel_name], notes, tempo)
       self.offset = cur_pos
 
-    # checks for errors, i.e. if sequence references any notes missing from the gamelan json
-    def validate_sequence(self, sequence, sequence_name):
-      missing_notes_by_instrument = {}
-      for track in sequence.tracks:
-        instrument_name = track.instrument
-        if not instrument_name in missing_notes_by_instrument:
-          missing_notes_by_instrument[instrument_name] = []
-        instrument = self.gamelan.instruments[instrument_name]
-        for note in set(track.notes):
-          if note == self.gamelan.continuation_note:
-            continue
-          if note not in instrument.samples:
-            missing_notes_by_instrument[instrument_name].append(note)
-      num_errors = 0
-      for instrument_name, missing_notes in missing_notes_by_instrument.items():
-        if missing_notes:
-          num_errors += 1
-          missing_notes_list = sorted(set(missing_notes))
-          print("ERROR in '%s' %s: gamelan is missing the following notes: %s" % (sequence_name, instrument_name, ",".join(missing_notes_list)))
-      return num_errors
+    def load_sections(self, sections):
+      for section_json in sections:
+        if "structure" in section_json:
+          count = int(section_json["count"]) if "count" in section_json else 1
+          for i in range(count):
+            self.load_sections(section_json["structure"])
+        else:
+          section = Section(section_json, self.sequences)
+          sequence = section.sequence
+          sequence_tempo = sequence.tempo.get_override(self.score_tempo)
+          section_tempo = section.tempo.get_override(sequence_tempo)
+          print("Loading %s" % section_json["sequence"])
+
+          if section.tempo.timeline:
+            # the section is overriding the tempo start and end 
+            section_tempo.offset = 0.0
+            section_tempo.span = 1.0 / section.count
+            for i in range(section.count):
+              self.load_sequence(sequence, section.filter, section_tempo)
+              section_tempo.offset += section_tempo.span
+          else:
+            # use the sequence's default tempo(s)
+            for i in range(section.count):
+              self.load_sequence(sequence, section.filter, sequence_tempo)
 
     def load_score(self, score_file): 
       num_errors = 0
       data = json.loads(open(score_file,"r").read())
-      sequences = {}
+      self.score_tempo = TempoSliced(data)
+      self.sequences = {}
       for name, sequence_json in data["sequences"].items():
         sequence = Sequence(sequence_json, self.gamelan.continuation_note)
-        num_errors += self.validate_sequence(sequence, name)
-        sequences[name] = sequence
+        missing_notes_by_insrument = self.gamelan.find_missing_notes(sequence.tracks)
+        for instrument_name, missing_notes in missing_notes_by_insrument.items():
+          if missing_notes:
+            num_errors += 1
+            missing_notes_list = sorted(set(missing_notes))
+            print("ERROR in '%s' %s: gamelan is missing the following notes: %s" % (name, instrument_name, ",".join(missing_notes_list)))
+        self.sequences[name] = sequence
       if num_errors:
         return num_errors
 
-      for idx, section_json in enumerate(data["structure"]):
-        section = Section(section_json, sequences)
-        sequence = section.sequence
-        print("Playing section %d: %s" % (idx + 1, section_json["sequence"]))
-
-        if section.tempos:
-          # the section is overriding the tempo start and end 
-          step = (section.tempos[1] - section.tempos[0]) / section.count
-          tempo_start = section.tempos[0]
-          tempo_end = section.tempos[0] + step
-          for i in range(section.count):
-            self.play_sequence(sequence, section.tracks, tempo_start, tempo_end)
-            tempo_start += step
-            tempo_end += step
-        else:
-          # use the sequence's default tempo(s)
-          for i in range(section.count):
-            self.play_sequence(sequence, section.tracks, sequence.tempos[0], sequence.tempos[1])
+      self.load_sections(data["structure"])
       return num_errors
 
     def write_output(self, output_file, output_data):

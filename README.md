@@ -1,6 +1,6 @@
 # gamelan_sequencer
 
-**Python sequencer for Gamelan music.**
+**Python sequencer for Gamelan music**
 
 ## Introduction
 
@@ -10,6 +10,16 @@ SOLUTION: I decided to write my own format inspired by Kepatihan, as well as a c
 
 I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorded for ketuk-ketik.com by Elisa Hough, and with permission I'm using said samples to seed this system.
 
+## Demo
+
+Clone this repository and run the following (assuming you have Python installed):
+
+`python gamelan.py javanese_gamelan.json kotekan_sonatina.json --mixdown=mixdown.wav`
+
+Output should sound something like this: https://youtu.be/6_ZQaYkq0q0
+
+_Note: The recording in the above video used the `--separates` option instead of `--mixdown`, which allowed me to make a custom mixdown from the individual tracks._
+
 
 ## Requirements
 
@@ -17,6 +27,7 @@ I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorde
 2. scipy library (only if you use a gamelan with detuning): `pip install scipy`
 3. a Gamelan JSON file: a listing of gamelan samples in JSON format
    - see javanese_gamelan.json for example
+   - all sounds referenced by this JSON must be WAV format and have the same framerate / bits-per-sample / num-channels.
 4. a Score JSON file: a score that utilizes said instruments, also in JSON format
    - see kotekan_sonatina.json for example
 
@@ -24,24 +35,35 @@ I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorde
 
 `python gamelan.py [GAMELAN_FILE] [SCORE_FILE] --mixdown=MIXDOWN_FILE --separates=SEPARATES_FOLDER`
 
-- GAMELAN_FILE (required): path to Gamelan JSON file (described above)
-- SCORE_FILE (required): path to Score JSON file (described above)
-- MIXDOWN_FILE: = if provided, the recording will be mixed down to a mono WAV file at this path
-- SEPARATES_FOLDER: = if provided, for each unique instrument/track name combination, you will get a WAV file in this directory
-  - Example: if a sequence track has an "instrument": "bonang", "name": "polos1", its notes will be part of "bonang_polos1".wav
-  - Example: if a sequence track has an "instrument": "bonang" but no "name" provided, its notes will be part of "bonang_bonang".wav
+- GAMELAN_FILE: path to Gamelan JSON file (described above)
+- SCORE_FILE: path to Score JSON file (described above)
+- Either (or both) of the following parameters:
+  - MIXDOWN_FILE: record to a single file
+  - SEPARATES_FOLDER: record to a folder of multiple files   
 
-You must provide either a MIXDOWN_FILE or SEPARATES_FOLDER (or both)
+## Output
 
-## Example
+Outputs will be mono WAV files, with the same framerate / bits-per-sample / num-channels as your sample files.
 
-Using the provided JSON files in this repository:
+If you provide a filename for `--mixdown`, the entire recording will be mixed down to a mono WAV file.
 
-`python gamelan.py javanese_gamelan.json kotekan_sonatina.json --mixdown=mixdown.wav`
+If you provide a folder path for `--separates`, you will get a separate mono WAV file for each unique instrument/name pair. 
 
-Output should sound something like this: https://youtu.be/6_ZQaYkq0q0
+### How Separates are split up
 
-(Note: The recording in the above video has `detune_rate_between_pairs` set to 5 and uses the --separates option to output tracks as separate WAV files, which I then panned and added reverb, etc.)
+For example, if you have a sequence like this:
+```
+{ "instrument": "gong",                            "notes": "1..." },
+{ "instrument": "bonang", "track_name": "polos",   "notes": "45.4" },
+{ "instrument": "bonang", "track_name": "sangsih", "notes": "32.3" }
+```
+Then the notes will be recorded into the following files, respectively: 
+- gong.wav
+- bonang_polos.wav
+- bonang_sangsih.wav
+
+They will all be in sync, so you can drag them into an audio application of your choice for mixing.
+
 
 ## Score Format
 

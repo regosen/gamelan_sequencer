@@ -130,14 +130,12 @@ class Instrument(object):
 class Gamelan(object):
     def __init__(self, config_file):
       config = json.loads(open(config_file,"r").read())
-      remote_folder = config["samples_host"] if "samples_host" in config else ""
-      cache_folder = config["samples_cache"] if "samples_host" in config else "samples_cache"
+      remote_folder = config.get("samples_host", "")
+      cache_folder = config.get("samples_cache", "samples_cache")
       if not os.path.isdir(cache_folder):
         os.makedirs(cache_folder)
-      self.paired_detune_rate = 0.0
-      if "detune_rate_between_pairs" in config:
-        self.paired_detune_rate = float(config["detune_rate_between_pairs"])
-      self.continuation_note = config["continuation_note"] if "continuation_note" in config else "."
+      self.paired_detune_rate = float(config.get("detune_rate_between_pairs",0.0))
+      self.continuation_note = config.get("continuation_note", ".")
       self.instruments = {}
       for instrument_name, instrument_data in config["instruments"].items():
         self.instruments[instrument_name] = Instrument(instrument_data, self.paired_detune_rate, remote_folder, cache_folder)
@@ -212,11 +210,14 @@ class TempoSliced(Tempo):
 class Track(object):
     def __init__(self, data, continuation_note):
       self.instrument = data["instrument"]
-      self.name = data["track_name"] if "track_name" in data else ""
+      self.name = data.get("track_name", "")
       self.notes = data["notes"]
       # ignore spaces unless user specified them as continuation notes
       if continuation_note != " ":
         self.notes.replace(" ","")
+      self.channel_name = self.instrument
+      if self.name:
+        self.channel_name += "_" + self.name
 
 class Sequence(object):
     def __init__(self, data, continuation_note):
@@ -225,10 +226,10 @@ class Sequence(object):
 
 class Filter(object):
     def __init__(self, data):
-      self.instruments = data["instruments"] if "instruments" in data else []
-      self.tracks = data["tracks"] if "tracks" in data else []
-      self.start = int(data["start"]) if "start" in data else 0
-      self.end = int(data["end"]) if "end" in data else -1
+      self.instruments = data.get("instruments", [])
+      self.tracks = data.get("tracks", [])
+      self.start = data.get("start", 0)
+      self.end = data.get("end", -1)
 
     def track_allowed(self, track):
       if self.instruments and not track.instrument in self.instruments:
@@ -247,8 +248,8 @@ class Section(object):
     def __init__(self, data, sequences):
       sequence_name = data["sequence"]
       self.sequence = sequences[sequence_name]
-      self.filter = Filter(data["filter"] if "filter" in data else {})
-      self.count = int(data["count"]) if "count" in data else 1
+      self.filter = Filter(data.get("filter", {}))
+      self.count = data.get("count", 1)
       self.tempo = TempoSliced(data)
 
 
@@ -315,26 +316,29 @@ class Composition(object):
         cur_pos += beat_length * cur_length
       return cur_pos
 
+    def output_for_track(self, track):
+      if not track.channel_name in self.outputs:
+        self.outputs[track.channel_name] = []
+      return self.outputs[track.channel_name]
+
+    def instrument_for_track(self, track):
+      return self.gamelan.instruments[track.instrument]
+
     def load_sequence(self, sequence, filter, tempo):
       cur_pos = 0
       for track in sequence.tracks:
         if filter.track_allowed(track):
-          instrument = self.gamelan.instruments[track.instrument]
-          channel_name = track.instrument
-          if track.name:
-            channel_name += "_" + track.name
-          if not channel_name in self.outputs:
-            self.outputs[channel_name] = []
           notes = filter.get_notes(track)
-          cur_pos = self.load_notes(instrument.samples, self.outputs[channel_name], notes, tempo)
+          instrument = self.instrument_for_track(track)
+          cur_pos = self.load_notes(instrument.samples, self.output_for_track(track), notes, tempo)
           if instrument.detuned_samples:
-            self.load_notes(instrument.detuned_samples, self.outputs[channel_name], notes, tempo)
+            self.load_notes(instrument.detuned_samples, self.output_for_track(track), notes, tempo)
       self.offset = cur_pos
 
     def load_sections(self, sections):
       for section_json in sections:
         if "structure" in section_json:
-          count = int(section_json["count"]) if "count" in section_json else 1
+          count = section_json.get("count", 1)
           for i in range(count):
             self.load_sections(section_json["structure"])
         else:
@@ -424,7 +428,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
 

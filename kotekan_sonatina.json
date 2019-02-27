@@ -13,8 +13,10 @@
     "'filter' is a set of optional parameters for filtering what is played.",
     "  'instruments': play only the specified instruments in the sequence",
     "  'tracks': play only the specified track names in the sequence",
-    "  'start', 'end': only play the specified subset of the sequence.",
-    "    for example: 'start':10, 'end':20 will play notes 10 to 20.",
+    "  'start': only play from the specified index",
+    "  'end': only play until the specified index (negative means trim from the end)",
+    "    example 1: 'start':10, 'end':20 will play notes from 10 to 20.",
+    "    example 2: 'start':10, 'end':-4 will play notes from 10 until the 4th note from the end.",
 
     "'sequences' is a named set of musical tracks.  Parameters:",
     "  'tracks': the set of tracks that will play",
@@ -44,10 +46,10 @@
     { "sequence": "theme_1", "filter": { "instruments": ["bonang"] } },
     { "structure": [
         { "sequence": "theme_1" },
-        { "sequence": "theme_1", "filter": {"start": 0, "end": 24} },
+        { "sequence": "theme_1", "filter": {"start": 0, "end": -4} },
         { "sequence": "theme_1_end" },
         { "sequence": "theme_2" },
-        { "sequence": "theme_2", "filter": {"start": 0, "end": 12} },
+        { "sequence": "theme_2", "filter": {"start": 0, "end": -4} },
         { "sequence": "theme_2_end" }
       ], "count": 2
     },

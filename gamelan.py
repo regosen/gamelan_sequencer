@@ -1,4 +1,4 @@
-import os, wave, struct, random, json, math, argparse
+import os, wave, struct, random, json, math, argparse, collections
 try:
   from itertools import zip_longest
   from urllib.request import Request, urlopen, HTTPError
@@ -103,7 +103,7 @@ class Sample(object):
 
 class Instrument(object):
     def __init__(self, data, detune_rate, remote_folder, cache_folder):
-      unpaired = "unpaired" in data and data["unpaired"].lower() == "true"
+      unpaired = data.get("unpaired", "").lower() == "true"
       self.samples = {}
       self.detuned_samples = {}
       for (note, wave_file) in data["samples"].items():
@@ -160,22 +160,22 @@ class Gamelan(object):
 
 class Tempo(object):
     def __init__(self, data):
-      self.timeline = {}
+      self.timeline = collections.OrderedDict()
       if "tempo" in data:
         self.timeline[0.0] = int(data["tempo"])
       elif "tempos" in data:
-        for offset, tempo in data["tempos"].items(): # this should already sort by key
+        for offset, tempo in sorted(data["tempos"].items(), key=lambda t: float(t[0])):
           self.timeline[float(offset)/100.0] = tempo
 
     def get_override(self, root_tempo):
       return self if self.timeline else root_tempo
 
     def get_value(self, percent_offset):
-      first_point = self.timeline.items()[0]
+      first_point = list(self.timeline.items())[0]
       if (len(self.timeline) == 1) or (percent_offset <= first_point[0]):
         return first_point[1]
 
-      last_point = self.timeline.items()[-1]
+      last_point = list(self.timeline.items())[-1]
       if percent_offset >= last_point[0]:
         return last_point[1]
 

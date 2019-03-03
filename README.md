@@ -1,4 +1,4 @@
-# gamelan_sequencer
+# Gamelan Sequencer
 
 **Python Sequencer for Gamelan Music**
 
@@ -15,9 +15,11 @@ I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorde
 Clone this repository and run the following (assuming you have Python installed):
 
 `python gamelan.py javanese_gamelan.json simple_score.json --mixdown=simple_score.wav`
+
 Output should be a simple musical piece.
 
 `python gamelan.py javanese_gamelan.json kotekan_sonatina.json --mixdown=kotekan_sonatina.wav`
+
 Output should sound something like this: https://youtu.be/6_ZQaYkq0q0
 
 _Note: The recording in the above video used the `--separates` option instead of `--mixdown`, which allowed me to make a custom mixdown from the individual tracks._

@@ -22,10 +22,10 @@
     "  'tracks': the set of tracks that will play",
     "  'tempo(s)': (optional: see tempo and tempos below)",
 
-    "'tracks' is a named set of notes to play by a Gamelan instrument.  Parameters:",
-    "  'instrument': the name of an instrument in the Gamelan JSON file",
+    "'tracks' is a named set of notes to play by a gamelan instrument.  Parameters:",
+    "  'instrument': the name of an instrument in the gamelan JSON file",
     "  'track_name': (optional) name that matches the 'tracks' parameters in 'structure')",
-    "  'notes': the score for the intrument to play.  Based on the mapping in the Gamelan JSON file.",
+    "  'notes': the score for the intrument to play.  Based on the mapping in the gamelan JSON file.",
 
     "'tempo' is a the tempo for the whole section.",
     "'tempos' is for gradually (linearly) changing tempos within a section.",
@@ -78,56 +78,56 @@
   "sequences": {
     "theme_1": {
       "tracks": [
-        { "instrument": "bonang", "track_name": "polos1",   "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
-        { "instrument": "bonang", "track_name": "sangsih1", "notes": "3.434.343.43.34.343.434.34.4" },
-        { "instrument": "saron",  "track_name": "pokok",    "notes": "3...4..5A.5.4...3...4.3.2..." }
+        { "instrument": "bonang", "track_name": "polos1",   "notes": "A6.A.6A.A6.A6A.6A.A6.A.6A.6." },
+        { "instrument": "bonang", "track_name": "sangsih1", "notes": "3.535.353.53.35.353.535.35.5" },
+        { "instrument": "saron",  "track_name": "pokok",    "notes": "3...5..6A.6.5...3...5.3.2..." }
       ]
     },
     "theme_1_end": {
       "tempos": {"0": 400, "100": 340},
       "tracks": [
         { "instrument": "kecrek",                           "notes": "1..." },
-        { "instrument": "gong",                             "notes": "1..." },
-        { "instrument": "bonang", "track_name": "polos1",   "notes": "A5.A" },
-        { "instrument": "bonang", "track_name": "sangsih1", "notes": "43.4" },
+        { "instrument": "gong",                             "notes": "1   " },
+        { "instrument": "bonang", "track_name": "polos1",   "notes": "A6.A" },
+        { "instrument": "bonang", "track_name": "sangsih1", "notes": "53.5" },
         { "instrument": "saron",  "track_name": "pokok",    "notes": "2..." }
       ]
     },
     "theme_2": {
       "tempo": 320,
       "tracks": [
-        { "instrument": "bonang", "track_name": "polos2",   "notes": "45.4.54.5.45.4.5" },
+        { "instrument": "bonang", "track_name": "polos2",   "notes": "56.5.65.6.56.5.6" },
         { "instrument": "bonang", "track_name": "sangsih2", "notes": ".23.32.323.23.32" },
-        { "instrument": "saron",  "track_name": "pokok",    "notes": "4...5...A.5.4..." }
+        { "instrument": "saron",  "track_name": "pokok",    "notes": "5...6...A.6.5..." }
       ]
     },
     "theme_2_end": {
       "tempos": {"0": 320, "100": 380},
       "tracks": [
         { "instrument": "kecrek",                           "notes": "1..." },
-        { "instrument": "gong",                             "notes": "1..." },
-        { "instrument": "bonang", "track_name": "polos2",   "notes": "45.4" },
+        { "instrument": "gong",                             "notes": "1   " },
+        { "instrument": "bonang", "track_name": "polos2",   "notes": "56.5" },
         { "instrument": "bonang", "track_name": "sangsih2", "notes": "32.3" },
-        { "instrument": "saron",  "track_name": "pokok",    "notes": "4..." }
+        { "instrument": "saron",  "track_name": "pokok",    "notes": "5..." }
       ]
     },
     "dev_1a": {
       "tracks": [
-        { "instrument": "bonang", "track_name": "polos1",  "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
-        { "instrument": "bonang", "track_name": "polos2",  "notes": "....45.4.54.5.45.4.5........" }
+        { "instrument": "bonang", "track_name": "polos1",  "notes": "A6.A.6A.A6.A6A.6A.A6.A.6A.6." },
+        { "instrument": "bonang", "track_name": "polos2",  "notes": "....56.5.65.6.56.5.6........" }
       ]
     },
     "dev_1b": {
       "tracks": [
-        { "instrument": "bonang", "track_name": "polos1",  "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
-        { "instrument": "bonang", "track_name": "polos2",  "notes": "....45.4.54.5.45.4.54.45.454" }
+        { "instrument": "bonang", "track_name": "polos1",  "notes": "A6.A.6A.A6.A6A.6A.A6.A.6A.6." },
+        { "instrument": "bonang", "track_name": "polos2",  "notes": "....56.5.65.6.56.5.65.56.565" }
       ]
     },
     "dev_1c": {
       "tracks": [
-        { "instrument": "bonang", "track_name": "polos1",   "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
-        { "instrument": "bonang", "track_name": "polos2",   "notes": ".54.45.4.54.5.45.4.54.45.454" },
-        { "instrument": "bonang", "track_name": "sangsih1", "notes": "3.434.343.43.34.343.434.34.4" },
+        { "instrument": "bonang", "track_name": "polos1",   "notes": "A6.A.6A.A6.A6A.6A.A6.A.6A.6." },
+        { "instrument": "bonang", "track_name": "polos2",   "notes": ".65.56.5.65.6.56.5.65.56.565" },
+        { "instrument": "bonang", "track_name": "sangsih1", "notes": "3.535.353.53.35.353.535.35.5" },
         { "instrument": "bonang", "track_name": "sangsih2", "notes": "32.3.23.32.323.23.32.3.23.2." }
       ]
     },
@@ -136,47 +136,47 @@
         { "instrument": "bonang", "track_name": "polos1",   "notes": "FE.F.EF.FE.FEF.EF.FE.F.EF.E." },
         { "instrument": "bonang", "track_name": "polos2",   "notes": ".CB.BC.B.CB.C.BC.B.CB.BC.BCB" },
         { "instrument": "bonang", "track_name": "sangsih1", "notes": "DC.D.CD.DC.DCD.CD.DC.D.CD.C." },
-        { "instrument": "saron",  "track_name": "sangsih2", "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." }
+        { "instrument": "saron",  "track_name": "sangsih2", "notes": "A6.A.6A.A6.A6A.6A.A6.A.6A.6." }
       ]
     },
     "dev_3": {
       "tracks": [
-        { "instrument": "bonang",  "track_name": "sangsih1", "notes": "3.434.343.43.34.343.434.34.4" },
-        { "instrument": "bonang",  "track_name": "polos2",   "notes": ".54.45.4.54.5.45.4.54.45.454" }
+        { "instrument": "bonang",  "track_name": "sangsih1", "notes": "3.535.353.53.35.353.535.35.5" },
+        { "instrument": "bonang",  "track_name": "polos2",   "notes": ".65.56.5.65.6.56.5.65.56.565" }
       ]
     },
     "recap_1": {
       "tempo": 320,
       "tracks": [
         { "instrument": "kecrek",                            "notes": "1.......1.......1.......1..." },
-        { "instrument": "gong",                              "notes": "1.......1.......1.......1..." },
-        { "instrument": "bonang",   "track_name": "polos1",  "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
-        { "instrument": "bonang",   "track_name": "polos2",  "notes": ".54.45.4.54.5.45.4.54.45.454" },
-        { "instrument": "bonang",   "track_name": "sangsih1","notes": "3.434.343.43.34.343.434.34.4" },
+        { "instrument": "gong",                              "notes": "1       1       1       1   " },
+        { "instrument": "bonang",   "track_name": "polos1",  "notes": "A6.A.6A.A6.A6A.6A.A6.A.6A.6." },
+        { "instrument": "bonang",   "track_name": "polos2",  "notes": ".65.56.5.65.6.56.5.65.56.565" },
+        { "instrument": "bonang",   "track_name": "sangsih1","notes": "3.535.353.53.35.353.535.35.5" },
         { "instrument": "bonang",   "track_name": "sangsih2","notes": "32.3.23.32.323.23.32.3.23.2." },
-        { "instrument": "saron",    "track_name": "pokok",   "notes": "4...5...A.5.4...5...A.5.4..." },
-        { "instrument": "jenglong", "track_name": "pokok",   "notes": "4...5...A.5.4...5...A.5.4..." }
+        { "instrument": "saron",    "track_name": "pokok",   "notes": "5...6...A.6.5...6...A.6.5..." },
+        { "instrument": "jenglong", "track_name": "pokok",   "notes": "5...6...A.6.5...6...A.6.5..." }
       ]
     },
     "recap_2": {
       "tempo": 320,
       "tracks": [
         { "instrument": "kecrek",                           "notes": "1.......1.......1.......1..." },
-        { "instrument": "gong",                             "notes": "1.......1.......1.......1..." },
+        { "instrument": "gong",                             "notes": "1       1       1       1   " },
         { "instrument": "bonang", "track_name": "polos1",   "notes": "FE.F.EF.FE.FEF.EF.FE.F.EF.E." },
         { "instrument": "bonang", "track_name": "polos2",   "notes": ".CB.BC.B.CB.C.BC.B.CB.BC.BCB" },
         { "instrument": "bonang", "track_name": "sangsih1", "notes": "DC.D.CD.DC.DCD.CD.DC.D.CD.C." },
-        { "instrument": "bonang", "track_name": "sangsih2", "notes": "A5.A.5A.A5.A5A.5A.A5.A.5A.5." },
-        { "instrument": "saron",  "track_name": "pokok",    "notes": "3...4..5A.5.4...3...4.3.2..." },
-        { "instrument": "jenglong","track_name": "pokok",   "notes": "3...4..5A.5.4...3...4.3.2..." }
+        { "instrument": "bonang", "track_name": "sangsih2", "notes": "A6.A.6A.A6.A6A.6A.A6.A.6A.6." },
+        { "instrument": "saron",  "track_name": "pokok",    "notes": "3...5..6A.6.5...3...5.3.2..." },
+        { "instrument": "jenglong","track_name": "pokok",   "notes": "3...5..6A.6.5...3...5.3.2..." }
       ]
     },
     "coda": {
       "tempo": 320,
       "tracks": [ 
         { "instrument": "kecrek",                           "notes": "1..." },
-        { "instrument": "gong",                             "notes": "1..." },
-        { "instrument": "bonang", "track_name": "polos1",   "notes": "A5.A" },
+        { "instrument": "gong",                             "notes": "1   " },
+        { "instrument": "bonang", "track_name": "polos1",   "notes": "A6.A" },
         { "instrument": "bonang", "track_name": "sangsih2", "notes": "32.3" }
       ]
     }

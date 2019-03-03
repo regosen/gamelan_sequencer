@@ -1,0 +1,39 @@
+{ 
+  "COMMENTS": [
+    "This is a JSON file representing a simple gamelan score.",
+    "See kotekan_sonatina.json for detailed syntax."
+  ],
+
+  "tempo": 400,
+
+  "structure": [ 
+    {
+      "sequence": {  "tracks": [
+          { "instrument": "saron",  "notes": "3...5..6A.6.5...3...5.3.2..." }
+        ]
+      }
+    },
+    {
+      "sequence": { "tracks": [
+          { "instrument": "bonang", "notes": "A6.A.6A.A6.A6A.6A.A6.A.6A.6." },
+          { "instrument": "bonang", "notes": "3.535.353.53.35.353.535.35.5" },
+          { "instrument": "saron",  "notes": "3...5..6A.6.5...3...5.3.2..." }
+        ]
+      }
+    },
+    {
+      "tempo": 320, "count": 2, "sequence": { "tracks": [
+          { "instrument": "bonang", "notes": "56.5.65.6.56.5.6" },
+          { "instrument": "bonang", "notes": ".23.32.323.23.32" },
+          { "instrument": "saron",  "notes": "5...6...A.6.5..." }
+        ]
+      }
+    },
+    {
+      "sequence": {  "tracks": [
+          { "instrument": "saron",  "notes": "3......." }
+        ]
+      }
+    }
+  ]
+}

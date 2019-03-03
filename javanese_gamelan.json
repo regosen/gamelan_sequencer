@@ -3,8 +3,10 @@
     "This is a JSON file mapping each instrument to a set of WAV sample files.",
     "Samples of the UC Davis Gamelan Ensemble, recorded for ketuk-ketik.com by Elisa Hough",
 
-    "'detune_rate_between_pairs' is 0 by default, applies to Balinese Gamelan (beats per second).",
+    "'detune_rate' is 0 by default, applies to Balinese Gamelan (beats per second between paired instruments).",
     "'continuation_note' in the score means the previous note will continue playing.",
+    "'rest_note' in the score means the previous note will stop.",
+
     "'samples_host' is a URL to where the samples can be downloaded from (if they're not local).",
     "'samples_cache' is a relative path to the samples on disk.",
     "    If a sample file doesn't exist under samples_cache, it will be copied from samples_host.",
@@ -14,8 +16,9 @@
     "  'samples': mapping of note symbols to the WAV file to play"
   ],
 
-  "detune_rate_between_pairs": "0",
+  "detune_rate": 0,
   "continuation_note": ".",
+  "rest_note": " ",
 
   "samples_host": "http://www.ketuk-ketik.com/",
   "samples_cache": "gamelan_sampler",
@@ -38,8 +41,8 @@
       "1": "bonang_low5.wav", 
       "2": "bonang_low4.wav", 
       "3": "bonang_low3.wav", 
-      "4": "bonang_low2.wav", 
-      "5": "bonang_low1.wav",
+      "5": "bonang_low2.wav", 
+      "6": "bonang_low1.wav",
       "A": "bonang_mid5.wav", 
       "B": "bonang_mid4.wav", 
       "C": "bonang_mid3.wav", 
@@ -56,8 +59,8 @@
       "1": "saron5low.wav", 
       "2": "saron4low.wav", 
       "3": "saron3low.wav", 
-      "4": "saron2.wav", 
-      "5": "saron1.wav",
+      "5": "saron2.wav", 
+      "6": "saron1.wav",
       "A": "saron5high.wav", 
       "B": "saron4high.wav", 
       "C": "saron3high.wav"
@@ -68,8 +71,8 @@
       "1": "jenglong5lo.wav", 
       "2": "jenglong4.wav", 
       "3": "jenglong3.wav", 
-      "4": "jenglong2.wav", 
-      "5": "jenglong1.wav",
+      "5": "jenglong2.wav", 
+      "6": "jenglong1.wav",
       "A": "jenglong5hi.wav"
       }
     }

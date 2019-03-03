@@ -134,11 +134,12 @@ class Gamelan(object):
       cache_folder = config.get("samples_cache", "samples_cache")
       if not os.path.isdir(cache_folder):
         os.makedirs(cache_folder)
-      self.paired_detune_rate = float(config.get("detune_rate_between_pairs",0.0))
+      self.detune_rate = float(config.get("detune_rate",0.0))
       self.continuation_note = config.get("continuation_note", ".")
+      self.rest_note = config.get("rest_note", " ")
       self.instruments = {}
       for instrument_name, instrument_data in config["instruments"].items():
-        self.instruments[instrument_name] = Instrument(instrument_data, self.paired_detune_rate, remote_folder, cache_folder)
+        self.instruments[instrument_name] = Instrument(instrument_data, self.detune_rate, remote_folder, cache_folder)
 
     # if sequence references any notes missing from the gamelan, returns list of notes per instrument
     def find_missing_notes(self, tracks):
@@ -150,6 +151,8 @@ class Gamelan(object):
         instrument = self.instruments[instrument_name]
         for note in set(track.notes):
           if note == self.continuation_note:
+            continue
+          if note == self.rest_note:
             continue
           if note not in instrument.samples:
             missing_notes_by_instrument[instrument_name].append(note)
@@ -208,21 +211,26 @@ class TempoSliced(Tempo):
       return super(TempoSliced, self).get_value(actual_offset)
 
 class Track(object):
-    def __init__(self, data, continuation_note):
+    def __init__(self, data, gamelan):
       self.instrument = data["instrument"]
       self.name = data.get("track_name", "")
       self.notes = data["notes"]
-      # ignore spaces unless user specified them as continuation notes
-      if continuation_note != " ":
-        self.notes.replace(" ","")
       self.channel_name = self.instrument
       if self.name:
         self.channel_name += "_" + self.name
 
 class Sequence(object):
-    def __init__(self, data, continuation_note):
+    def __init__(self, data, gamelan):
       self.tempo = TempoSliced(data)
-      self.tracks = [Track(track_json, continuation_note) for track_json in data["tracks"]]
+      self.tracks = [Track(track_json, gamelan) for track_json in data["tracks"]]
+      self.errors = 0
+      missing_notes_by_insrument = gamelan.find_missing_notes(self.tracks)
+      for instrument_name, missing_notes in missing_notes_by_insrument.items():
+        if missing_notes:
+          self.errors += 1
+          missing_notes_list = sorted(set(missing_notes))
+          print("ERROR in %s: gamelan is missing the following notes: %s" % (instrument_name, ",".join(missing_notes_list)))
+
 
 class Filter(object):
     def __init__(self, data):
@@ -245,9 +253,14 @@ class Filter(object):
         return track.notes[self.start:self.end]
 
 class Section(object):
-    def __init__(self, data, sequences):
-      sequence_name = data["sequence"]
-      self.sequence = sequences[sequence_name]
+    def __init__(self, data, sequences, gamelan):
+      sequence_data = data["sequence"]
+      if isinstance(sequence_data, dict):
+        self.sequence_name = "(unnamed)"
+        self.sequence = Sequence(sequence_data, gamelan)
+      else:
+        self.sequence_name = sequence_data
+        self.sequence = sequences[sequence_data]
       self.filter = Filter(data.get("filter", {}))
       self.count = data.get("count", 1)
       self.tempo = TempoSliced(data)
@@ -314,7 +327,7 @@ class Composition(object):
         # play what's left, extending a little further into the next sequence
         self.paste_mix(samples[cur_note].get_data(), output, cur_pos, beat_length * cur_length, beat_length, cur_tempo)
         cur_pos += beat_length * cur_length
-      return cur_pos
+      return self.offset + (beat_length * len(notes))
 
     def output_for_track(self, track):
       if not track.channel_name in self.outputs:
@@ -336,17 +349,17 @@ class Composition(object):
       self.offset = cur_pos
 
     def load_sections(self, sections):
-      for section_json in sections:
+      for index, section_json in enumerate(sections):
         if "structure" in section_json:
           count = section_json.get("count", 1)
           for i in range(count):
             self.load_sections(section_json["structure"])
         else:
-          section = Section(section_json, self.sequences)
+          section = Section(section_json, self.sequences, self.gamelan)
           sequence = section.sequence
           sequence_tempo = sequence.tempo.get_override(self.score_tempo)
           section_tempo = section.tempo.get_override(sequence_tempo)
-          print("Loading %s" % section_json["sequence"])
+          print("Loading %d: %s" % (index, section.sequence_name))
 
           if section.tempo.timeline:
             # the section is overriding the tempo start and end 
@@ -365,17 +378,13 @@ class Composition(object):
       data = json.loads(open(score_file,"r").read())
       self.score_tempo = TempoSliced(data)
       self.sequences = {}
-      for name, sequence_json in data["sequences"].items():
-        sequence = Sequence(sequence_json, self.gamelan.continuation_note)
-        missing_notes_by_insrument = self.gamelan.find_missing_notes(sequence.tracks)
-        for instrument_name, missing_notes in missing_notes_by_insrument.items():
-          if missing_notes:
-            num_errors += 1
-            missing_notes_list = sorted(set(missing_notes))
-            print("ERROR in '%s' %s: gamelan is missing the following notes: %s" % (name, instrument_name, ",".join(missing_notes_list)))
-        self.sequences[name] = sequence
-      if num_errors:
-        return num_errors
+      if "sequences" in data:
+        for name, sequence_json in data["sequences"].items():
+          sequence = Sequence(sequence_json, self.gamelan)
+          num_errors += sequence.errors
+          self.sequences[name] = sequence
+        if num_errors:
+          return num_errors
 
       self.load_sections(data["structure"])
       return num_errors

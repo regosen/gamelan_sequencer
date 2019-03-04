@@ -31,10 +31,10 @@ _Note: The recording in the above video used the `--separates` option instead of
 1. Python 2.6 or greater (or any version of Python 3)
 2. scipy library (only if you use a gamelan with detuning): `pip install scipy`
 3. a gamelan JSON file: a listing of gamelan samples in JSON format
-   - see javanese_gamelan.json for example
+   - see `javanese_gamelan.json` for example
    - all sounds referenced by this JSON must be WAV format and have the same framerate / bits-per-sample / num-channels.
 4. a score JSON file: a score that utilizes said instruments, also in JSON format
-   - see kotekan_sonatina.json for example
+   - see `simple_score.json` or `kotekan_sonatina.json` for examples
 
 ## Usage
 
@@ -48,11 +48,11 @@ _Note: The recording in the above video used the `--separates` option instead of
 
 ## Output
 
-Outputs will be mono WAV files, with the same framerate / bits-per-sample / num-channels as your sample files.
+Outputs will be WAV files with the same framerate / bits-per-sample / num-channels as your sample files.
 
-If you provide a filename for `--mixdown`, the entire recording will be mixed down to a mono WAV file.
+If you provide a filename for `--mixdown`, the entire recording will be mixed down to a WAV file.
 
-If you provide a folder path for `--separates`, you will get a separate mono WAV file for each unique instrument/name pair. 
+If you provide a folder path for `--separates`, you will get a separate WAV file for each unique instrument/name pair. 
 
 ### How Separates are split up
 

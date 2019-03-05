@@ -4,9 +4,9 @@
 
 ## Introduction
 
-PROBLEM: western scores and MIDI files aren't well suited for composing and playing pieces for a gamelan ensemble.
+PROBLEM: Western scores and MIDI files aren't well suited for composing and playing pieces for a gamelan ensemble.
 
-SOLUTION: I decided to write my own format inspired by Kepatihan, as well as a corresponding sequencer script in Python.  When provided with instrument samples, the script turns a score into a recording.
+SOLUTION: Gamelan Sequencer uses a gamelan-friendly Kepatihan-inspired score format.  When provided with instrument samples and a score, the provided Python script generates a recording of the music.
 
 I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorded for ketuk-ketik.com by Elisa Hough, and with permission I'm using said samples to seed this system.
 
@@ -79,7 +79,7 @@ For convenience I used alphanumberic values in the provided example:
 ```
                        .....
 Kepatihan: 12356 12356 12356
-           ^^^^^
+           ·····
 
 My format: 12356 ABCDE FGHIJ
 ```

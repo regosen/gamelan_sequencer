@@ -86,8 +86,6 @@ My format: 12356 ABCDE FGHIJ
 
 You can specify any character mapping (even unicode) you choose in your gamelan JSON file, and then use the mapping in your corresponding score JSON files.
 
-You can also specify what character to denote for continuation of the previous note ("." by default).  It also ignores spaces (unless you specify a space as your continuation character).
-
 ## License
 
 Licensed under the MIT License.

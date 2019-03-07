@@ -14,11 +14,11 @@ I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorde
 
 Clone this repository and run the following (assuming you have Python installed):
 
-`python gamelan.py javanese_gamelan.json simple_score.json --mixdown=simple_score.wav`
+`python gamelan.py javanese_gamelan.json scores/simple_score.json --mixdown=simple_score.wav`
 
 Output should be a simple musical piece.
 
-`python gamelan.py javanese_gamelan.json kotekan_sonatina.json --mixdown=kotekan_sonatina.wav`
+`python gamelan.py javanese_gamelan.json scores/kotekan_sonatina.json --mixdown=kotekan_sonatina.wav`
 
 Output should sound something like this: https://youtu.be/6_ZQaYkq0q0
 
@@ -34,7 +34,7 @@ _Note: The recording in the above video used the `--separates` option instead of
    - see `javanese_gamelan.json` for example
    - all sounds referenced by this JSON must be WAV format and have the same framerate / bits-per-sample / num-channels.
 4. a score JSON file: a score that utilizes said instruments, also in JSON format
-   - see `simple_score.json` or `kotekan_sonatina.json` for examples
+   - see `/scores` folder for examples
 
 ## Usage
 

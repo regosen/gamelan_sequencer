@@ -12,7 +12,7 @@ def relative_path_to_script(relpath):
   script_dir = os.path.abspath(os.path.dirname(__file__))
   return os.path.join(script_dir, relpath)
 
-DEFAULT_SAMPLES_FILE = relative_path_to_script('../samples/javanese_gamelan.json')
+DEFAULT_SAMPLES_FILE = relative_path_to_script('samples/javanese_gamelan.json')
 FLOAT_TO_16BIT = pow(2, 15)
 
 ##### CLASSES FOR GAMELAN DATA (includes loading/detuning samples)

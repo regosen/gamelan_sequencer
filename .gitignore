@@ -5,3 +5,4 @@ gamelan_sequencer.egg-info/*
 build/*
 dist/*
 setup.py
+*.in

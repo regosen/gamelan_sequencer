@@ -39,7 +39,7 @@ _Note: The recording in the above video used the `--separates` option instead of
 
 ### From the Command Line
  
-`python gamelan.py [SCORE_FILE] --samples=SAMPLES_FILE --mixdown=MIXDOWN_FILE --separates=SEPARATES_FOLDER`
+`python -m gamelan_sequencer [SCORE_FILE] --samples=SAMPLES_FILE --mixdown=MIXDOWN_FILE --separates=SEPARATES_FOLDER`
 
 - SCORE_FILE: path to score JSON file (described above)
 - SAMPLES_FILE (optional): path to gamelan JSON file (described above)

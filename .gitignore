@@ -1,3 +1,6 @@
 
 *.wav
 *.pyc
+gamelan_sequencer.egg-info/*
+dist/*
+setup.py

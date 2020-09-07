@@ -14,11 +14,11 @@ I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorde
 
 Clone this repository and run the following (assuming you have Python installed):
 
-`python -m gamelan_sequencer javanese_gamelan.json scores/simple_score.json --mixdown=simple_score.wav`
+`python -m gamelan_sequencer scores/simple_score.json --mixdown=simple_score.wav`
 
 Output should be a simple musical piece.
 
-`python -m gamelan_sequencer javanese_gamelan.json scores/kotekan_sonatina.json --mixdown=kotekan_sonatina.wav`
+`python -m gamelan_sequencer scores/kotekan_sonatina.json --mixdown=kotekan_sonatina.wav`
 
 Output should sound something like this: https://youtu.be/6_ZQaYkq0q0
 
@@ -30,7 +30,7 @@ _Note: The recording in the above video used the `--separates` option instead of
 1. Python 2.6 or greater (or any version of Python 3)
 2. scipy library (only if you use a gamelan with detuning): `pip install scipy`
 3. a samples JSON file: a listing of gamelan samples in JSON format
-   - see `javanese_gamelan.json` for example
+   - defaults to `javanese_gamelan.json`
    - all sounds referenced by this JSON must be WAV format and have the same framerate / bits-per-sample / num-channels.
 4. a score JSON file: a score that utilizes said instruments, also in JSON format
    - see `/scores` folder for examples
@@ -39,10 +39,10 @@ _Note: The recording in the above video used the `--separates` option instead of
 
 ### From the Command Line
  
-`python gamelan.py [SAMPLES_FILE] [SCORE_FILE] --mixdown=MIXDOWN_FILE --separates=SEPARATES_FOLDER`
+`python gamelan.py [SCORE_FILE] --samples=SAMPLES_FILE --mixdown=MIXDOWN_FILE --separates=SEPARATES_FOLDER`
 
-- SAMPLES_FILE: path to gamelan JSON file (described above)
 - SCORE_FILE: path to score JSON file (described above)
+- SAMPLES_FILE (optional): path to gamelan JSON file (described above)
 - Either (or both) of the following parameters:
   - MIXDOWN_FILE: record to a single file
   - SEPARATES_FOLDER: record to a folder of multiple files   
@@ -51,7 +51,7 @@ _Note: The recording in the above video used the `--separates` option instead of
 
 from gamelan_sequencer import Gamelan
 
-gamelan = Gamelan(SAMPLES_FILE)
+gamelan = Gamelan()
 score = gamelan.load_score(SCORE_FILE)
 if score.load_errors == 0:
    score.write_mixdown(MIXDOWN_FILE)

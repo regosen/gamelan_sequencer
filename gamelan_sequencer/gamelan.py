@@ -8,6 +8,11 @@ except ImportError:
   # This is Python 2
   from urllib2 import Request, urlopen, HTTPError
 
+def relative_path_to_script(relpath):
+  script_dir = os.path.abspath(os.path.dirname(__file__))
+  return os.path.join(script_dir, relpath)
+
+DEFAULT_SAMPLES_FILE = relative_path_to_script('../samples/javanese_gamelan.json')
 FLOAT_TO_16BIT = pow(2, 15)
 
 ##### CLASSES FOR GAMELAN DATA (includes loading/detuning samples)
@@ -71,8 +76,8 @@ class Instrument(object):
         raise e
 
 class Gamelan(object):
-    def __init__(self, config_file):
-      config = json.loads(open(config_file,"r").read())
+    def __init__(self, samples_file = DEFAULT_SAMPLES_FILE):
+      config = json.loads(open(samples_file,"r").read())
       remote_folder = config.get("samples_host", "")
       cache_folder = config.get("samples_cache", "samples_cache")
       if not os.path.isdir(cache_folder):

@@ -11,8 +11,8 @@
     "'samples_cache' is a relative path to the samples on disk.",
     "    If a sample file doesn't exist under samples_cache, it will be copied from samples_host.",
 
-    "'instruments' is a named set of intruments.  Parameters:",
-    "  'unpaired': (if you use detune_rate_between_pairs) this will opt out of detuning",
+    "'instruments' is a named set of instruments.  Parameters:",
+    "  'unpaired': (if you use detune_rate) this will opt out of detuning",
     "  'samples': mapping of note symbols to the WAV file to play"
   ],
 
@@ -21,7 +21,7 @@
   "rest_note": " ",
 
   "samples_host": "http://www.ketuk-ketik.com/",
-  "samples_cache": "gamelan_sampler",
+  "samples_cache": "cache",
 
   "instruments": {
     "kecrek": { 

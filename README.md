@@ -48,7 +48,7 @@ _Note: The recording in the above video used the `--separates` option instead of
   - SEPARATES_FOLDER: record to a folder of multiple files   
 
 ### From the Python Environment
-
+```
 from gamelan_sequencer import Gamelan
 
 gamelan = Gamelan()
@@ -57,6 +57,7 @@ if score.load_errors == 0:
    score.write_mixdown(MIXDOWN_FILE)
    -and/or-
    score.write_separates(SEPARATES_FOLDER)
+```
 
 ## Output
 

@@ -29,7 +29,7 @@ _Note: The recording in the above video used the `--separates` option instead of
 
 1. Python 2.6 or greater (or any version of Python 3)
 2. scipy library (only if you use a gamelan with detuning): `pip install scipy`
-3. a score JSON file: a score that utilizes said instruments, also in JSON format
+3. a score JSON file: a score that utilizes said instruments, in JSON format
    - see `/scores` folder for examples
 
 ## Usage

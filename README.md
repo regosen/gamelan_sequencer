@@ -29,10 +29,7 @@ _Note: The recording in the above video used the `--separates` option instead of
 
 1. Python 2.6 or greater (or any version of Python 3)
 2. scipy library (only if you use a gamelan with detuning): `pip install scipy`
-3. a samples JSON file: a listing of gamelan samples in JSON format
-   - defaults to `javanese_gamelan.json`
-   - all sounds referenced by this JSON must be WAV format and have the same framerate / bits-per-sample / num-channels.
-4. a score JSON file: a score that utilizes said instruments, also in JSON format
+3. a score JSON file: a score that utilizes said instruments, also in JSON format
    - see `/scores` folder for examples
 
 ## Usage
@@ -42,10 +39,12 @@ _Note: The recording in the above video used the `--separates` option instead of
 `python -m gamelan_sequencer [SCORE_FILE] --samples=SAMPLES_FILE --mixdown=MIXDOWN_FILE --separates=SEPARATES_FOLDER`
 
 - SCORE_FILE: path to score JSON file (described above)
-- SAMPLES_FILE (optional): path to gamelan JSON file (described above)
 - Either (or both) of the following parameters:
   - MIXDOWN_FILE: record to a single file
-  - SEPARATES_FOLDER: record to a folder of multiple files   
+  - SEPARATES_FOLDER: record to a folder of multiple files
+- SAMPLES_FILE (optional): path to gamelan JSON file
+  - defaults to provided `javanese_gamelan.json`
+  - all sounds referenced by this JSON must be WAV format and have the same framerate / bits-per-sample / num-channels.
 
 ### From the Python Environment
 ```

@@ -24,13 +24,10 @@ Output should sound something like this: https://youtu.be/6_ZQaYkq0q0
 
 _Note: The recording in the above video used the `--separates` option instead of `--mixdown`, which allowed me to make a custom mixdown from the individual tracks._
 
-
 ## Requirements
 
-1. Python 2.6 or greater (or any version of Python 3)
-2. scipy library (only if you use a gamelan with detuning): `pip install scipy`
-3. a score: a JSON-formatted score
-   - see [scores](scores) folder for examples
+- Python 2.6+ or any version of Python 3
+- (only if you set detune_rate > 0) scipy library: `pip install scipy`
 
 ## Usage
 
@@ -38,7 +35,8 @@ _Note: The recording in the above video used the `--separates` option instead of
  
 `python -m gamelan_sequencer SCORE_FILE [--mixdown=MIXDOWN_FILE] [--separates=SEPARATES_FOLDER] [--samples=SAMPLES_FILE]`
 
-- SCORE_FILE: path to score JSON file (described above)
+- SCORE_FILE: path to a JSON-formatted score
+   - see [scores](scores) folder for examples
 - Either (or both) of the following parameters:
   - MIXDOWN_FILE: record to a single file
   - SEPARATES_FOLDER: record to a folder of multiple files

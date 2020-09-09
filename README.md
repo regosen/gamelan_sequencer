@@ -29,21 +29,21 @@ _Note: The recording in the above video used the `--separates` option instead of
 
 1. Python 2.6 or greater (or any version of Python 3)
 2. scipy library (only if you use a gamelan with detuning): `pip install scipy`
-3. a score JSON file: a score that utilizes said instruments, in JSON format
-   - see `/scores` folder for examples
+3. a score: a JSON-formatted score
+   - see [scores](scores) folder for examples
 
 ## Usage
 
 ### From the Command Line
  
-`python -m gamelan_sequencer [SCORE_FILE] --samples=SAMPLES_FILE --mixdown=MIXDOWN_FILE --separates=SEPARATES_FOLDER`
+`python -m gamelan_sequencer SCORE_FILE [--mixdown=MIXDOWN_FILE] [--separates=SEPARATES_FOLDER] [--samples=SAMPLES_FILE]`
 
 - SCORE_FILE: path to score JSON file (described above)
 - Either (or both) of the following parameters:
   - MIXDOWN_FILE: record to a single file
   - SEPARATES_FOLDER: record to a folder of multiple files
 - SAMPLES_FILE (optional): path to gamelan JSON file
-  - defaults to provided `javanese_gamelan.json`
+  - defaults to provided [javanese_gamelan.json](gamelan_sequencer/samples/javanese_gamelan.json)
   - all sounds referenced by this JSON must be WAV format and have the same framerate / bits-per-sample / num-channels.
 
 ### From the Python Environment
@@ -66,6 +66,42 @@ If you provide a filename for `--mixdown`, the entire recording will be mixed do
 
 If you provide a folder path for `--separates`, you will get a separate WAV file for each unique instrument/name pair. 
 
+## Score Format
+See [scores](scores) folder for examples.
+
+Gamelan music has different variations of scale notations, but typically they're represented as numbers within an octave, with a dot above or below the number to represent a lower or higher octave, respectively.
+
+For convenience I used alphanumberic values in the provided example:
+
+```
+                       .....
+Kepatihan: 12356 12356 12356
+           ·····
+
+My format: 12356 ABCDE FGHIJ
+```
+
+You can specify any character mapping (even unicode) you choose in your samples JSON file, and then use the mapping in your corresponding score JSON files.
+
+For example, in the default samples file [javanese_gamelan.json](gamelan_sequencer/samples/javanese_gamelan.json) we have these jenglong samples:
+```
+    "jenglong": { 
+      "samples": {
+      "1": "jenglong5lo.wav", 
+      "2": "jenglong4.wav", 
+      "3": "jenglong3.wav", 
+      "5": "jenglong2.wav", 
+      "6": "jenglong1.wav",
+      "A": "jenglong5hi.wav"
+      }
+    }
+```
+
+And so, in our score we can reference these notes in a track like this:
+```
+{ "instrument": "jenglong", "notes": "5...6...A.6.5...6...A.6.5..." }
+```
+
 ### How Separates are split up
 
 For example, if you have a sequence like this:
@@ -81,22 +117,6 @@ Then the notes will be recorded into the following files, respectively:
 
 They will all be in sync, so you can drag them into an audio application of your choice for mixing.
 
-
-## Score Format
-
-Gamelan music has different variations of scale notations, but typically they're represented as numbers within an octave, with a dot above or below the number to represent a lower or higher octave, respectively.
-
-For convenience I used alphanumberic values in the provided example:
-
-```
-                       .....
-Kepatihan: 12356 12356 12356
-           ·····
-
-My format: 12356 ABCDE FGHIJ
-```
-
-You can specify any character mapping (even unicode) you choose in your gamelan JSON file, and then use the mapping in your corresponding score JSON files.
 
 ## License
 

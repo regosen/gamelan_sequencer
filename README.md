@@ -69,7 +69,7 @@ See [scores](scores) folder for examples.
 
 Gamelan music has different variations of scale notations, but typically they're represented as numbers within an octave, with a dot above or below the number to represent a lower or higher octave, respectively.
 
-For convenience I used alphanumberic values in the provided example:
+For convenience I used alphanumeric values in the provided example:
 
 ```
                        .....

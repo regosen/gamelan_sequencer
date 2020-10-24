@@ -24,12 +24,21 @@ Output should sound something like this: https://youtu.be/6_ZQaYkq0q0
 
 _Note: The recording in the above video used the `--separates` option instead of `--mixdown`, which allowed me to make a custom mixdown from the individual tracks._
 
-## Requirements
+
+### Get Involved
+If you made a composition that you'd like to share, we'd be happy to add it to the "scores" folder.
+
+If you made a recording with your composition, we'd be happy to feature it here as well.
+
+Please raise any issues or suggestions for improvement!
+
+
+## Usage
+
+### Requirements
 
 - Python 2.6+ or any version of Python 3
 - (only if you set detune_rate > 0) scipy library: `pip install scipy`
-
-## Usage
 
 ### From the Command Line
  
@@ -63,6 +72,7 @@ Outputs will be WAV files with the same framerate / bits-per-sample / num-channe
 If you provide a filename for `--mixdown`, the entire recording will be mixed down to a WAV file.
 
 If you provide a folder path for `--separates`, you will get a separate WAV file for each unique instrument/name pair. 
+
 
 ## Score Format
 See [scores](scores) folder for examples.
@@ -121,4 +131,3 @@ They will all be in sync, so you can drag them into an audio application of your
 Licensed under the MIT License.
 
 NOTE: samples from ketuk-ketik.com are not covered by this license.  Please refer to http://elisahough.com/sounds/sampler.html regarding those online samples.
-

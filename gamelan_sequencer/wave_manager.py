@@ -39,9 +39,8 @@ class WaveManager(object):
   def write_wave(self, output_file, data):
     print("Writing " + output_file)
     frames = bytearray(struct.pack("%ih" % len(data), *data))
-    w = wave.open(output_file, "wb")
-    w.setframerate(self.framerate)
-    w.setnchannels(self.nchannels)
-    w.setsampwidth(self.sampwidth)
-    w.writeframes(frames)
-    w.close()
+    with wave.open(output_file, "wb") as w:
+      w.setframerate(self.framerate)
+      w.setnchannels(self.nchannels)
+      w.setsampwidth(self.sampwidth)
+      w.writeframes(frames)

@@ -10,20 +10,29 @@ SOLUTION: Gamelan Sequencer uses a gamelan-friendly Kepatihan-inspired score for
 
 I was fortunate to find online samples of the UC Davis Gamelan Ensemble, recorded for ketuk-ketik.com by Elisa Hough, and with permission I'm using said samples to seed this system.
 
+## Installation
+
+You can download this repository from GitHub, or grab it from PyPI:
+
+```
+$ pip install gamelan_sequencer
+```
+
+PyPI page is here: https://pypi.org/project/gamelan-sequencer/
+
 ## Demo
 
 Clone this repository and run the following (assuming you have Python installed):
 
-`python -m gamelan_sequencer scores/simple_score.json --mixdown=simple_score.wav`
+`[python -m] gamelan_sequencer scores/simple_score.json --mixdown=simple_score.wav`
 
 Output should be a simple musical piece.
 
-`python -m gamelan_sequencer scores/kotekan_sonatina.json --mixdown=kotekan_sonatina.wav`
+`[python -m] gamelan_sequencer scores/kotekan_sonatina.json --mixdown=kotekan_sonatina.wav`
 
 Output should sound something like this: https://youtu.be/6_ZQaYkq0q0
 
 _Note: The recording in the above video used the `--separates` option instead of `--mixdown`, which allowed me to make a custom mixdown from the individual tracks._
-
 
 ### Get Involved
 If you made a composition that you'd like to share, we'd be happy to add it to the "scores" folder.
@@ -32,17 +41,17 @@ If you made a recording with your composition, we'd be happy to feature it here 
 
 Please raise any issues or suggestions for improvement!
 
-
 ## Usage
 
 ### Requirements
 
 - Python 2.6+ or any version of Python 3
-- (only if you set detune_rate > 0) scipy library: `pip install scipy`
+- Python packages: (only if you set detune_rate > 0) [scipy](https://pypi.org/project/scipy/)
+  - automatically installed if you use `pip install` below
 
 ### From the Command Line
  
-`python -m gamelan_sequencer SCORE_FILE [--mixdown=MIXDOWN_FILE] [--separates=SEPARATES_FOLDER] [--samples=SAMPLES_FILE]`
+`[python -m] gamelan_sequencer SCORE_FILE [--mixdown=MIXDOWN_FILE] [--separates=SEPARATES_FOLDER] [--samples=SAMPLES_FILE]`
 
 - SCORE_FILE: path to a JSON-formatted score
    - see [scores](scores) folder for examples
@@ -54,14 +63,14 @@ Please raise any issues or suggestions for improvement!
   - all sounds referenced by this JSON must be WAV format and have the same framerate / bits-per-sample / num-channels.
 
 ### From the Python Environment
-```
+```python
 from gamelan_sequencer import Gamelan
 
 gamelan = Gamelan()
 score = gamelan.load_score(SCORE_FILE)
 if score.load_errors == 0:
    score.write_mixdown(MIXDOWN_FILE)
-   -and/or-
+   # and/or:
    score.write_separates(SEPARATES_FOLDER)
 ```
 
@@ -92,7 +101,7 @@ My format: 12356 ABCDE FGHIJ
 You can specify any character mapping (even unicode) you choose in your samples JSON file, and then use the mapping in your corresponding score JSON files.
 
 For example, in the default samples file [javanese_gamelan.json](gamelan_sequencer/samples/javanese_gamelan.json) we have these jenglong samples:
-```
+```json
     "jenglong": { 
       "samples": {
       "1": "jenglong5lo.wav", 
@@ -106,14 +115,14 @@ For example, in the default samples file [javanese_gamelan.json](gamelan_sequenc
 ```
 
 And so, in our score we can reference these notes in a track like this:
-```
+```json
 { "instrument": "jenglong", "notes": "5...6...A.6.5...6...A.6.5..." }
 ```
 
 ### How Separates are split up
 
 For example, if you have a sequence like this:
-```
+```json
 { "instrument": "gong",                            "notes": "1..." },
 { "instrument": "bonang", "track_name": "polos",   "notes": "56.5" },
 { "instrument": "bonang", "track_name": "sangsih", "notes": "32.3" }
@@ -124,7 +133,6 @@ Then the notes will be recorded into the following files, respectively:
 - bonang_sangsih.wav
 
 They will all be in sync, so you can drag them into an audio application of your choice for mixing.
-
 
 ## License
 
